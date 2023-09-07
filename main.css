@@ -1,0 +1,12 @@
+
+.black {
+	background-color: black;
+}
+
+video, canvas {
+	width: 20vw;
+}
+
+canvas {
+	visibility: hidden;
+}
