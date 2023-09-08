@@ -42,7 +42,36 @@ At the end of the script we need to hide all the elements and show the 20 images
 
 Breaks the building of the docker image into separate stages. Data can be passed from one stage to the next. Anything not needed can be ignored so it produces leaner and more secure docker images. Can speed up build (with BuildKit) as images from previous stages can be copied in.
 
-Useful for debugging (have different debugging and production stages).
+Useful for debugging (have different debugging and production stages). 
+They are also helpful for smart caching (only including the files you need in a production environment).
+
+Below is a simple example showing it used to create a lightweight NodeJS deplyment image.
+
+```yaml
+# ===== stage 1 (compile and build) =====
+FROM node:14 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . . # copy the project files in
+RUN npm run build
+
+# ===== Stage 2 =====
+FROM node:14-alpine
+
+WORKDIR /app
+
+# this is where we copy the parts we need from stage 1
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+
+EXPOSE 3000
+CMD ["node", "dist/app.js"]
+
+```
 
 ## Could you describe how you would set up a system for running tests automatically whenever new commits are made in a pull request?
 
@@ -69,6 +98,12 @@ on:
 
 Start with a Kubernetes cluster, which includes nodes (worker machines) and a control plane for cluster orchestration. Deploy a user authentication service with a database to store user information.
 
-Start by deploying a user authentication service in the Kubernetes cluster and use Role-Based Access Control (RBAC) for managing permissions and define RBAC rules to control access to various resources, including services and pods. Create custom RBAC roles and authorised users should be issued a JWT which should contain user identity and group information.
-Implement authentication and authorization checks on the endpoints. Verify token and extract credentials.
-Implement authorization checks based on the user's identity and use the RBAC rules to check if the user has permissions to access a resource. Finally log all resource requests.
+Start by deploying a user authentication service in the Kubernetes cluster 
+and use Role-Based Access Control (RBAC) for managing permissions.
+
+Define RBAC rules to control access to various resources, including services and pods. Create custom RBAC roles and authorised users should be issued a JWT which should contain user identity and group information.
+Implement authentication and authorization checks on the endpoints.
+
+Verify token and extract credentials.
+Implement authorization checks based on the user's identity and use the RBAC rules to check 
+if the user has permissions to access a resource. Finally log all resource requests.
