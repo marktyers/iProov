@@ -6,7 +6,7 @@
   <meta charset="utf-8">
 
   <title>Webcam Images</title>
-  <meta name="description" content="demo of the media recording api">
+  <meta name="description" content="capturing images from video stream">
   <meta name="author" content="Mark Tyers">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="main.css">
@@ -15,13 +15,15 @@
 
 <body>
   <h1>Video Frames</h1>
+  <p data-count="0">Captured <span id="counter">0</span> images</p>
     
 <!-- Stream video via webcam -->
     <video playsinline autoplay></video>
 
 <!-- Webcam video snapshot -->
 <canvas></canvas>
-<section hidden>
-</section>
+
+<!-- Images captured from canvas -->
+<section hidden></section>
 </body>
 </html>

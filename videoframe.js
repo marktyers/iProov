@@ -27,7 +27,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   // stop the process after 10 seconds (10,000 ms)
   setTimeout( () => tidyUp(interval), 10000)
   // immediately grab a screenshot then repeat every 0.5 seconds (500ms)
-  captureImage()
+  // short delay to allow stream to start on slow computer
+  setTimeout( () => captureImage(), 150)
   const interval = setInterval(() => captureImage(), 500)
 })
 
@@ -42,6 +43,12 @@ function handleSuccess(stream) {
 
 // capture a single image
 function captureImage() {
+  // get references to the DOM elements
+  const canvas = document.querySelector('canvas')
+  var context = canvas.getContext('2d')
+  const video = document.querySelector('video')
+  const counter = document.querySelector('span#counter')
+
   // get next colour choice and set background
   const bg = colours.shift()
   const body = document.querySelector('body')
@@ -49,9 +56,6 @@ function captureImage() {
   if (bg === 0) body.classList.add('black')
 
   // capture video frame in the canvas element
-  const canvas = document.querySelector('canvas')
-  var context = canvas.getContext('2d')
-  const video = document.querySelector('video')
   context.drawImage(video, 0, 0, 320, 240)
 
   // convert the image to a dataURL, create img element and set source
@@ -61,6 +65,9 @@ function captureImage() {
 
   // add the image to the page
   document.querySelector('section').appendChild(img)
+
+  // increment the counter
+  counter.textContent = parseInt(counter.textContent) + 1
 }
 
 // perform clean-up at the end

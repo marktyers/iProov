@@ -36,6 +36,11 @@ Use a `setTimeout()` callback to cancel the `setInterval()`
 
 At the end of the script we need to hide all the elements and show the 20 images.
 
+## Future Work
+
+1. Image capture size needs tweaking to match video size.
+2. Not happy about short delay needed before first image capture.
+
 # DevOps Questions
 
 ## Could you briefly explain how multistage docker builds work, and give an example of a scenario in which it would be useful?
