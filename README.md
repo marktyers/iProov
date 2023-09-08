@@ -36,6 +36,15 @@ Use a `setTimeout()` callback to cancel the `setInterval()`
 
 At the end of the script we need to hide all the elements and show the 20 images.
 
+## Challenges
+
+I was working on a slow computer and the first image was captured before the webcam streaming
+was fully set up so the first image was a plain white square.
+
+Temporary fix was to add a short delay before taking the first capture.
+Better fix would be to delay the entire capture process (to keep the timing)
+but this would add extra complexity to the script (v2?).
+
 ## Future Work
 
 1. Image capture size needs tweaking to match video size.
